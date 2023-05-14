@@ -4,3 +4,6 @@ spring:
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
     driverClassName: org.postgresql.Driver
+    hikari:
+      connection-init-sql: create schema IF NOT EXISTS users_scheme;
+      schema: users_scheme

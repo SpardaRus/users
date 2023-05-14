@@ -10,6 +10,7 @@ create table IF NOT EXISTS users_scheme.users
     email            text not null UNIQUE,
     phone            text not null UNIQUE,
     info             text             default null,
+    deleted          bool             default false,
     create_time      timestamptz      default now(),
     last_modify_time timestamptz      default now()
 );
