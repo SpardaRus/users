@@ -4,15 +4,15 @@
 --comment Создание таблицы пользователей
 create table IF NOT EXISTS users_scheme.users
 (
-    id               uuid primary key default gen_random_uuid(),
-    first_name       text not null,
-    last_name        text not null,
-    email            text not null UNIQUE,
-    phone            text not null UNIQUE,
-    info             text             default null,
-    deleted          bool             default false,
-    create_time      timestamptz      default now(),
-    last_modify_time timestamptz      default now()
+    id               uuid primary key     default gen_random_uuid(),
+    first_name       text        not null,
+    last_name        text        not null,
+    email            text        not null UNIQUE,
+    phone            text        not null UNIQUE,
+    info             text                 default null,
+    deleted          bool        not null default false,
+    create_time      timestamptz not null default now(),
+    last_modify_time timestamptz not null default now()
 );
 comment on table users_scheme.users is 'Таблица описывающая конкретного пользователя';
 comment on column users_scheme.users.id is 'Идентификатор записи в таблице';

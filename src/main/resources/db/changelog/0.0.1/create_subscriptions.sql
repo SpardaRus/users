@@ -4,11 +4,11 @@
 --comment Создание таблицы подписчиков
 create table IF NOT EXISTS users_scheme.subscriptions
 (
-    id                 uuid primary key default gen_random_uuid(),
+    id                 uuid primary key     default gen_random_uuid(),
     user_id            uuid,
     user_subscriber_id uuid,
-    deleted            bool             default false,
-    create_time        timestamptz      default now(),
+    deleted            bool        not null default false,
+    create_time        timestamptz not null default now(),
     constraint fk_user_id foreign key (user_id) REFERENCES users_scheme.users (id),
     constraint fk_user_subscriber_id foreign key (user_subscriber_id) REFERENCES users_scheme.users (id)
 );
