@@ -1,5 +1,6 @@
 package ru.social_network.users.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.social_network.users.entity.User;
 import ru.social_network.users.service.UserService;
@@ -7,6 +8,7 @@ import ru.social_network.users.service.UserService;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/v1/users")
 public class UserController {
@@ -22,25 +24,24 @@ public class UserController {
         return userService.findAll();
     }
 
-    @GetMapping("/{id}")
-    public User find(@PathVariable UUID id) {
-        return userService.find(id);
-    }
-
     @PostMapping
     public void save(@RequestBody User user) {
         userService.save(user);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id) {
-        userService.delete(id);
+    @PutMapping("/{userId}")
+    public void update(@PathVariable UUID userId, @RequestBody User user) {
+        userService.update(userId, user);
     }
 
-    @PutMapping
-    public void update(@RequestBody User user) {
-        userService.update(user);
+    @GetMapping("/{userId}")
+    public User find(@PathVariable UUID userId) {
+        return userService.find(userId);
     }
 
+    @DeleteMapping("/{userId}")
+    public void delete(@PathVariable UUID userId) {
+        userService.delete(userId);
+    }
 
 }

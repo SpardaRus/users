@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -24,5 +24,6 @@ public class Subscription {
     private UUID userId;
     private UUID userSubscriberId;
     private Boolean deleted;
-    private OffsetDateTime createTime;
+    private LocalDateTime createTime;
+    private LocalDateTime lastModifyTime;
 }

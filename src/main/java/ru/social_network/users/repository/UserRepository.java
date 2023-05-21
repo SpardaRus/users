@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import ru.social_network.users.entity.User;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,19 +14,14 @@ import java.util.UUID;
 @Transactional
 public interface UserRepository extends CrudRepository<User, UUID> {
 
-    @Query("SELECT user FROM User user " +
-            " WHERE user.deleted = false")
-    List<User> findAll();
+    List<User> findAllByDeleted(Boolean deleted);
 
-    @Query("SELECT user FROM User user " +
-            " WHERE user.deleted = false" +
-            " AND user.id = :id")
-    Optional<User> findById(UUID id);
+    Optional<User> findByIdAndDeleted(UUID userId, Boolean deleted);
 
     @Modifying
     @Query("UPDATE User user " +
             " SET user.deleted = true, " +
             " user.lastModifyTime = :lastModifyTime " +
-            " WHERE user.id = :id")
-    void delete(UUID id, OffsetDateTime lastModifyTime);
+            " WHERE user.id = :userId")
+    void softDelete(UUID userId, LocalDateTime lastModifyTime);
 }

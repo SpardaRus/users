@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -27,6 +27,6 @@ public class User {
     private String phone;
     private String info;
     private Boolean deleted;
-    private OffsetDateTime createTime;
-    private OffsetDateTime lastModifyTime;
+    private LocalDateTime createTime;
+    private LocalDateTime lastModifyTime;
 }
