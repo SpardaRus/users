@@ -7,3 +7,5 @@ spring:
     hikari:
       connection-init-sql: CREATE SCHEMA IF NOT EXISTS users_scheme;
       schema: users_scheme
+  liquibase:
+    default-schema: users_scheme
