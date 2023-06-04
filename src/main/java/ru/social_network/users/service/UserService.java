@@ -49,7 +49,7 @@ public class UserService {
     }
 
     @Transactional
-    public void delete(UUID userId) throws IllegalArgumentException {
+    public void delete(UUID userId){
         userRepository.findById(userId)
                 .ifPresentOrElse(
                         foundUser -> {
