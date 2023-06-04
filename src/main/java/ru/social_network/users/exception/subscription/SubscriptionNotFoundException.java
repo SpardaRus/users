@@ -11,7 +11,7 @@ public class SubscriptionNotFoundException extends RuntimeException {
         super(message);
     }
 
-    public SubscriptionNotFoundException(UUID subscriptionsId) {
-        super("Подписка с id: " + subscriptionsId + " - не найдена");
+    public SubscriptionNotFoundException(UUID subscriptionId) {
+        super("Подписка с id: " + subscriptionId + " - не найдена");
     }
 }

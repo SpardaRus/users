@@ -31,14 +31,14 @@ public class SubscriptionController {
     }
 
     @Operation(summary = "Обновление подписки пользователя")
-    @PutMapping("/{userId}/subscriptions/{subscriptionsId}")
-    public void update(@PathVariable UUID userId, @PathVariable UUID subscriptionsId, @RequestBody Subscription subscription) {
-        subscriptionsService.update(userId, subscriptionsId, subscription);
+    @PutMapping("/{userId}/subscriptions/{subscriptionId}")
+    public void update(@PathVariable UUID userId, @PathVariable UUID subscriptionId, @RequestBody Subscription subscription) {
+        subscriptionsService.update(userId, subscriptionId, subscription);
     }
 
     @Operation(summary = "Удаление подписки пользователя")
-    @DeleteMapping("/{userId}/subscriptions/{subscriptionsId}")
-    public void unsubscribe(@PathVariable UUID userId, @PathVariable UUID subscriptionsId) {
-        subscriptionsService.unsubscribe(userId, subscriptionsId);
+    @DeleteMapping("/{userId}/subscriptions/{subscriptionId}")
+    public void unsubscribe(@PathVariable UUID userId, @PathVariable UUID subscriptionId) {
+        subscriptionsService.unsubscribe(userId, subscriptionId);
     }
 }

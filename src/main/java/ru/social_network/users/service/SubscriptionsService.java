@@ -43,10 +43,10 @@ public class SubscriptionsService {
     }
 
     @Transactional
-    public void update(UUID userId, UUID subscriptionsId, Subscription subscription) {
-        verifyIdOrThrow(userId, subscriptionsId, subscription);
+    public void update(UUID userId, UUID subscriptionId, Subscription subscription) {
+        verifyIdOrThrow(userId, subscriptionId, subscription);
 
-        subscriptionRepository.findById(subscriptionsId)
+        subscriptionRepository.findById(subscriptionId)
                 .ifPresentOrElse(
                         foundSubscription -> {
                             subscription.setLastModifyTime(DateUtils.now());
@@ -55,25 +55,25 @@ public class SubscriptionsService {
                             log.info("Подписка для пользователя {} - успешно обновлена с id: {}", userId, subscription.getId());
                         },
                         () -> {
-                            throw new SubscriptionNotFoundException(subscriptionsId);
+                            throw new SubscriptionNotFoundException(subscriptionId);
                         }
                 );
     }
 
     @Transactional
-    public void unsubscribe(UUID userId, UUID subscriptionsId) {
-        subscriptionRepository.findById(subscriptionsId)
+    public void unsubscribe(UUID userId, UUID subscriptionId) {
+        subscriptionRepository.findById(subscriptionId)
                 .ifPresentOrElse(
                         foundSubscription -> {
                             if (Boolean.TRUE.equals(foundSubscription.getDeleted())) {
                                 log.warn("Подписка: {} - уже удалена", foundSubscription.getId());
                             } else {
-                                subscriptionRepository.softDelete(subscriptionsId, DateUtils.now());
-                                log.info("Подписка {} - успешно удалена для пользователя {}", subscriptionsId, userId);
+                                subscriptionRepository.softDelete(subscriptionId, DateUtils.now());
+                                log.info("Подписка {} - успешно удалена для пользователя {}", subscriptionId, userId);
                             }
                         },
                         () -> {
-                            throw new SubscriptionNotFoundException(subscriptionsId);
+                            throw new SubscriptionNotFoundException(subscriptionId);
                         }
                 );
     }
@@ -84,11 +84,11 @@ public class SubscriptionsService {
         }
     }
 
-    private void verifyIdOrThrow(UUID userId, UUID subscriptionsId, Subscription subscription) {
+    private void verifyIdOrThrow(UUID userId, UUID subscriptionId, Subscription subscription) {
         verifyIdOrThrow(userId, subscription);
 
-        if (!subscriptionsId.equals(subscription.getId())) {
-            throw new SubscriptionBadRequestException("id подписки указан некорректно. id url: " + subscriptionsId + ", id в теле запроса: " + subscription.getId());
+        if (!subscriptionId.equals(subscription.getId())) {
+            throw new SubscriptionBadRequestException("id подписки указан некорректно. id url: " + subscriptionId + ", id в теле запроса: " + subscription.getId());
         }
     }
 }
