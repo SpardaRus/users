@@ -1,11 +1,8 @@
 package ru.social_network.users.utils;
 
-import ru.social_network.users.annotaion.ExcludeFromJacocoGeneratedReport;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-@ExcludeFromJacocoGeneratedReport
 public class DateUtils {
 
     private DateUtils() {
