@@ -36,9 +36,47 @@ public class SubscriptionControllerTest extends BaseIntegration {
                                     "lastModifyTime": "2023-05-20T00:00:00"
                                   }
                                 ]
-                                 """
+                                """
                 ))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @Sql(scripts = {
+            "classpath:sql/insert_users.sql",
+            "classpath:sql/insert_subscriptions.sql"
+    })
+    @DisplayName("Проверка успешного получения списка подписок на пользователя с удалением")
+    void findAllWithUnsubscribe() throws Exception {
+        get("/v1/users/291253a6-f261-11ed-a05b-0242ac120003/subscriptions")
+                .andExpect(content().json(
+                        """
+                                [
+                                  {
+                                    "id": "7f4d218e-f062-4169-8b68-b28626ab9244",
+                                    "userId": "291253a6-f261-11ed-a05b-0242ac120003",
+                                    "userSubscriberId": "202572d2-f261-11ed-a05b-0242ac120003",
+                                    "deleted": false,
+                                    "createTime": "2023-05-20T00:00:00",
+                                    "lastModifyTime": "2023-05-20T00:00:00"
+                                  }
+                                ]
+                                """
+                ))
+                .andExpect(status().isOk());
+
+        delete("/v1/users/291253a6-f261-11ed-a05b-0242ac120003/subscriptions/7f4d218e-f062-4169-8b68-b28626ab9244")
+                .andExpect(status().isOk());
+
+        get("/v1/users/291253a6-f261-11ed-a05b-0242ac120003/subscriptions")
+                .andExpect(content().json(
+                        """
+                                {
+                                    "message":"Подписки не найдены"
+                                }
+                                 """
+                ))
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -50,7 +88,7 @@ public class SubscriptionControllerTest extends BaseIntegration {
                                 {
                                     "message":"Подписки не найдены"
                                 }
-                                 """
+                                """
                 ))
                 .andExpect(status().isNotFound());
     }
@@ -101,7 +139,7 @@ public class SubscriptionControllerTest extends BaseIntegration {
                                 {
                                     "message":"id пользователя указан некорректно. id url: 291253a6-f261-11ed-a05b-0242ac120003, id в теле запроса: 291253a6-f261-11ed-a05b-0242ac120004"
                                 }
-                                 """
+                                """
                 ))
                 .andExpect(status().isBadRequest());
     }
@@ -157,7 +195,7 @@ public class SubscriptionControllerTest extends BaseIntegration {
                                 {
                                     "message":"id пользователя указан некорректно. id url: 291253a6-f261-11ed-a05b-0242ac120003, id в теле запроса: 291253a6-f261-11ed-a05b-0242ac120004"
                                 }
-                                 """
+                                """
                 ))
                 .andExpect(status().isBadRequest());
     }
@@ -185,7 +223,7 @@ public class SubscriptionControllerTest extends BaseIntegration {
                                 {
                                     "message":"id подписки указан некорректно. id url: 7f4d218e-f062-4169-8b68-b28626ab9244, id в теле запроса: 7f4d218e-f062-4169-8b68-b28626ab9245"
                                 }
-                                 """
+                                """
                 ))
                 .andExpect(status().isBadRequest());
     }
@@ -209,7 +247,7 @@ public class SubscriptionControllerTest extends BaseIntegration {
                                 {
                                     "message":"Подписка с id: 7f4d218e-f062-4169-8b68-b28626ab9244 - не найдена"
                                 }
-                                 """
+                                """
                 ))
                 .andExpect(status().isNotFound());
     }
@@ -220,7 +258,7 @@ public class SubscriptionControllerTest extends BaseIntegration {
             "classpath:sql/insert_subscriptions.sql"
     })
     @DisplayName("Проверка успешного удаления подписки на пользователя")
-    void delete() throws Exception {
+    void unsubscribe() throws Exception {
         delete("/v1/users/291253a6-f261-11ed-a05b-0242ac120003/subscriptions/7f4d218e-f062-4169-8b68-b28626ab9244")
                 .andExpect(status().isOk());
 
@@ -236,7 +274,7 @@ public class SubscriptionControllerTest extends BaseIntegration {
             "classpath:sql/insert_subscriptions.sql"
     })
     @DisplayName("Проверка успешного повторного удаления подписки на пользователя")
-    void deleteRepeat() throws Exception {
+    void unsubscribeRepeat() throws Exception {
         delete("/v1/users/291253a6-f261-11ed-a05b-0242ac120003/subscriptions/7f4d218e-f062-4169-8b68-b28626ab9244")
                 .andExpect(status().isOk());
 
@@ -251,14 +289,14 @@ public class SubscriptionControllerTest extends BaseIntegration {
 
     @Test
     @DisplayName("Проверка получения ошибки при удалении подписки на пользователя при пустой бд")
-    void deleteEmpty() throws Exception {
+    void unsubscribeEmpty() throws Exception {
         delete("/v1/users/291253a6-f261-11ed-a05b-0242ac120003/subscriptions/7f4d218e-f062-4169-8b68-b28626ab9244")
                 .andExpect(content().json(
                         """
                                 {
                                     "message":"Подписка с id: 7f4d218e-f062-4169-8b68-b28626ab9244 - не найдена"
                                 }
-                                 """
+                                """
                 ))
                 .andExpect(status().isNotFound());
     }

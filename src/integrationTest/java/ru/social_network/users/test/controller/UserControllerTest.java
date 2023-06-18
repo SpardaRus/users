@@ -78,6 +78,103 @@ public class UserControllerTest extends BaseIntegration {
     }
 
     @Test
+    @DisplayName("Проверка успешного получения списка пользователей с удалением пользователей")
+    @Sql(scripts = {
+            "classpath:sql/insert_users.sql"
+    })
+    void findAllWithDelete() throws Exception {
+        get("/v1/users")
+                .andExpect(content().json(
+                        """
+                                [
+                                   {
+                                     "id": "7407c806-a6d8-4849-9fb9-71dc71a2aa91",
+                                     "firstName": "Илья",
+                                     "lastName": "Журавлев",
+                                     "email": "ilya@yandex.ru",
+                                     "phone": "+79271408413",
+                                     "info": null,
+                                     "deleted": false,
+                                     "createTime": "2023-05-20T00:00:00",
+                                     "lastModifyTime": "2023-05-20T00:00:00"
+                                   },
+                                   {
+                                     "id": "202572d2-f261-11ed-a05b-0242ac120003",
+                                     "firstName": "Никита",
+                                     "lastName": "Подписывающий",
+                                     "email": "nikita@yandex.ru",
+                                     "phone": "+79271408414",
+                                     "info": null,
+                                     "deleted": false,
+                                     "createTime": "2023-05-20T00:00:00",
+                                     "lastModifyTime": "2023-05-20T00:00:00"
+                                   },
+                                   {
+                                     "id": "a74a7726-f261-11ed-a05b-0242ac120003",
+                                     "firstName": "Рома",
+                                     "lastName": "Сафронов",
+                                     "email": "roma@yandex.ru",
+                                     "phone": "+79271408415",
+                                     "info": null,
+                                     "deleted": false,
+                                     "createTime": "2023-05-20T00:00:00",
+                                     "lastModifyTime": "2023-05-20T00:00:00"
+                                   },
+                                   {
+                                     "id": "291253a6-f261-11ed-a05b-0242ac120003",
+                                     "firstName": "Вася",
+                                     "lastName": "Уважаемый",
+                                     "email": "vasya@yandex.ru",
+                                     "phone": "+79271408416",
+                                     "info": null,
+                                     "deleted": false,
+                                     "createTime": "2023-05-20T00:00:00",
+                                     "lastModifyTime": "2023-05-20T00:00:00"
+                                   }
+                                ]
+                                """
+                ))
+                .andExpect(status().isOk());
+
+        delete("/v1/users/7407c806-a6d8-4849-9fb9-71dc71a2aa91")
+                .andExpect(status().isOk());
+
+        delete("/v1/users/a74a7726-f261-11ed-a05b-0242ac120003")
+                .andExpect(status().isOk());
+
+        get("/v1/users")
+                .andExpect(content().json(
+                        """
+                                [
+                                   {
+                                     "id": "202572d2-f261-11ed-a05b-0242ac120003",
+                                     "firstName": "Никита",
+                                     "lastName": "Подписывающий",
+                                     "email": "nikita@yandex.ru",
+                                     "phone": "+79271408414",
+                                     "info": null,
+                                     "deleted": false,
+                                     "createTime": "2023-05-20T00:00:00",
+                                     "lastModifyTime": "2023-05-20T00:00:00"
+                                   },
+                                   {
+                                     "id": "291253a6-f261-11ed-a05b-0242ac120003",
+                                     "firstName": "Вася",
+                                     "lastName": "Уважаемый",
+                                     "email": "vasya@yandex.ru",
+                                     "phone": "+79271408416",
+                                     "info": null,
+                                     "deleted": false,
+                                     "createTime": "2023-05-20T00:00:00",
+                                     "lastModifyTime": "2023-05-20T00:00:00"
+                                   }
+                                ]
+                                """
+                ))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     @DisplayName("Проверка получения ошибки при запросе получения списка пользователей в пустой базе")
     void findAllEmptyUsers() throws Exception {
         get("/v1/users")
@@ -86,7 +183,7 @@ public class UserControllerTest extends BaseIntegration {
                                 {
                                     "message":"Пользователи не найдены"
                                 }
-                                 """
+                                """
                 ))
                 .andExpect(status().isNotFound());
     }
@@ -125,7 +222,7 @@ public class UserControllerTest extends BaseIntegration {
                                 {
                                     "message":"Пользователь с id: 7407c806-a6d8-4849-9fb9-71dc71a2aa91 - не найден"
                                 }
-                                 """
+                                """
                 ))
                 .andExpect(status().isNotFound());
     }
@@ -202,7 +299,7 @@ public class UserControllerTest extends BaseIntegration {
                                 {
                                     "message":"id пользователя указан некорректно. id url: 7407c806-a6d8-4849-9fb9-71dc71a2aa91, id в теле запроса: 7407c806-a6d8-4849-9fb9-71dc71a2aa92"
                                 }
-                                 """
+                                """
                 ))
                 .andExpect(status().isBadRequest());
     }
@@ -226,7 +323,7 @@ public class UserControllerTest extends BaseIntegration {
                                 {
                                     "message":"Пользователь с id: 7407c806-a6d8-4849-9fb9-71dc71a2aa91 - не найден"
                                 }
-                                 """
+                                """
                 ))
                 .andExpect(status().isNotFound());
     }
@@ -276,14 +373,13 @@ public class UserControllerTest extends BaseIntegration {
     @Test
     @DisplayName("Проверка получения ошибки при запросе удаления пользователя в пустой бд")
     void deleteEmpty() throws Exception {
-        String userId = "7407c806-a6d8-4849-9fb9-71dc71a2aa91";
-        delete("/v1/users/" + userId)
+        delete("/v1/users/7407c806-a6d8-4849-9fb9-71dc71a2aa91")
                 .andExpect(content().json(
                         """
                                 {
                                     "message":"Пользователь с id: 7407c806-a6d8-4849-9fb9-71dc71a2aa91 - не найден"
                                 }
-                                 """
+                                """
                 ))
                 .andExpect(status().isNotFound());
     }
