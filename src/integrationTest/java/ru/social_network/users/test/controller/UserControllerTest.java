@@ -1,8 +1,8 @@
-package ru.social_network.users.controller;
+package ru.social_network.users.test.controller;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.social_network.users.BaseIntegration;
+import ru.social_network.users.test.BaseIntegration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

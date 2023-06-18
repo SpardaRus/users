@@ -1,4 +1,4 @@
-package ru.social_network.users;
+package ru.social_network.users.test;
 
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
