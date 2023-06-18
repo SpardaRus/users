@@ -4,8 +4,9 @@
 --comment Создание тестовых пользователей
 
 -- Создание пользователя без подписчиков
-insert into users (first_name, last_name, email, phone, deleted, create_time, last_modify_time)
-values ('Илья', 'Журавлев', 'ilya@yandex.ru', '+79271408413', false, '2023-05-20 00:00:00', '2023-05-20 00:00:00');
+insert into users (id, first_name, last_name, email, phone, deleted, create_time, last_modify_time)
+values ('7407c806-a6d8-4849-9fb9-71dc71a2aa91', 'Илья', 'Журавлев', 'ilya@yandex.ru', '+79271408413', false,
+        '2023-05-20 00:00:00', '2023-05-20 00:00:00');
 
 -- Создание подписчика Никита
 insert into users (id, first_name, last_name, email, phone, deleted, create_time, last_modify_time)

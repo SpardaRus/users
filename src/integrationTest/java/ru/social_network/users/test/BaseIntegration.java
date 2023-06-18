@@ -33,16 +33,37 @@ public class BaseIntegration {
         userRepository.deleteAll();
     }
 
-    protected ResultActions post(String url, String requestBody) throws Exception {
-        return perform(requestBody, MockMvcRequestBuilders.post(url));
+    protected ResultActions get(String url) throws Exception {
+        return perform(
+                MockMvcRequestBuilders.get(url)
+        );
     }
 
-    private ResultActions perform(String requestBody, MockHttpServletRequestBuilder requestBuilder) throws Exception {
+    protected ResultActions post(String url, String requestBody) throws Exception {
+        return perform(
+                MockMvcRequestBuilders.post(url)
+                        .content(requestBody)
+        );
+    }
+
+    protected ResultActions put(String url, String requestBody) throws Exception {
+        return perform(
+                MockMvcRequestBuilders.put(url)
+                        .content(requestBody)
+        );
+    }
+
+    protected ResultActions delete(String url) throws Exception {
+        return perform(
+                MockMvcRequestBuilders.delete(url)
+        );
+    }
+
+    private ResultActions perform(MockHttpServletRequestBuilder requestBuilder) throws Exception {
         return mockMvc.perform(
                         requestBuilder
                                 .contentType(APPLICATION_JSON_VALUE)
                                 .accept(APPLICATION_JSON_VALUE)
-                                .content(requestBody)
                 )
                 .andDo(print());
     }
